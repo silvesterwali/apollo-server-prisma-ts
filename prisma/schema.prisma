@@ -21,6 +21,13 @@ model Post {
   author    User?    @relation(fields: [authorId], references: [id])
 }
 
+model Notes {
+  id        Int      @id @default(autoincrement())
+  content   String
+  craetedAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
 model Profile {
   id     Int     @id @default(autoincrement())
   bio    String?

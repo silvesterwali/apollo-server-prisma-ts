@@ -1,8 +1,11 @@
 import { Context } from '../Context';
-import { Post, Profile, User } from '../interfaceType';
+import { Note, Post, Profile, User } from '../interfaceType';
 
 interface queryUser {
   id?: number;
+}
+interface inputNote {
+  content: string;
 }
 export const resolvers = {
   Query: {
@@ -23,6 +26,22 @@ export const resolvers = {
     },
     posts: async (_parent: any, _args: any, ctx: Context): Promise<Post[]> => {
       return (await ctx.prisma.post.findMany()) as Post[];
+    },
+    notes: async (_parent: any, _args: any, ctx: Context): Promise<Note[]> => {
+      return (await ctx.prisma.notes.findMany()) as Note[];
+    },
+  },
+  Mutation: {
+    createNote: async (
+      _parent: any,
+      args: inputNote,
+      ctx: Context
+    ): Promise<Note> => {
+      return await ctx.prisma.notes.create({
+        data: {
+          content: args.content,
+        },
+      });
     },
   },
   post: {

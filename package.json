@@ -4,12 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node-dev  --respawn src/index.ts"
+    "dev": "nodemon --watch './**/*.ts' --exec ts-node src/index.ts"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/node": "^16.11.7",
-    "node-dev": "^7.1.0",
+    "nodemon": "^2.0.15",
     "prisma": "3.4.2",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"

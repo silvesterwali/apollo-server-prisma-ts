@@ -1,5 +1,5 @@
 import { Context } from '../Context';
-import { Note, Post, Profile, User } from '../interfaceType';
+import { Category, Note, Post, Profile, User } from '../interfaceType';
 
 interface queryUser {
   id?: number;
@@ -65,5 +65,9 @@ export const resolvers = {
         },
       })) as Profile;
     },
+  },
+  role: {
+    USER: 'USER',
+    ADMIN: 'ADMIN',
   },
 };

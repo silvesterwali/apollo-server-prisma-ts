@@ -36,12 +36,12 @@ export const typeDefs = gql`
   type category {
     id: Int!
     name: String
-    post: [Post]
+    post: [post]
   }
 
   enum role {
-    user
-    admin
+    USER
+    ADMIN
   }
 
   type Query {

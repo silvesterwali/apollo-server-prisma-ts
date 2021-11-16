@@ -23,9 +23,9 @@ model Post {
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-  Post Post[] @relation(references: [id])
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[] @relation(references: [id])
 }
 
 model Notes {

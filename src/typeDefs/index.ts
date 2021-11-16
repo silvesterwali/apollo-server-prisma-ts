@@ -7,6 +7,8 @@ export const typeDefs = gql`
     name: String
     profile: profile
     role: role
+    posts: [post]
+    totalPost: Int
   }
 
   type profile {
@@ -29,6 +31,7 @@ export const typeDefs = gql`
     published: Boolean
     createdAt: String
     updatedAt: String
+    authorId: Int!
     author: user
     categories: [category]
   }

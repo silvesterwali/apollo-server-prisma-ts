@@ -1,5 +1,5 @@
 import { Context } from '../Context';
-import { Category, Note, Post, Profile, User } from '../interfaceType';
+import { Note, Post, Profile, User } from '../interfaceType';
 
 interface queryUser {
   id?: number;
@@ -64,6 +64,22 @@ export const resolvers = {
           userId: parent.id,
         },
       })) as Profile;
+    },
+    posts: async (
+      parent: User,
+      _args: undefined,
+      ctx: Context
+    ): Promise<Post[]> => {
+      return (await ctx.prisma.post.findMany({
+        where: { authorId: parent.id },
+      })) as Post[];
+    },
+    totalPost: async (
+      parent: User,
+      _args: undefined,
+      ctx: Context
+    ): Promise<number | null> => {
+      return await ctx.prisma.post.count({ where: { authorId: parent.id } });
     },
   },
   role: {

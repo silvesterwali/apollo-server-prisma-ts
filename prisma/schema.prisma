@@ -11,14 +11,21 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User?    @relation(fields: [authorId], references: [id])
+  id         Int        @id @default(autoincrement())
+  title      String     @db.VarChar(255)
+  content    String?
+  published  Boolean    @default(false)
+  authorId   Int
+  createdAt  DateTime   @default(now())
+  categories Category[] @relation(references: [id])
+  updatedAt  DateTime   @updatedAt
+  author     User?      @relation(fields: [authorId], references: [id])
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  Post Post[] @relation(references: [id])
 }
 
 model Notes {
@@ -41,4 +48,10 @@ model User {
   name    String?
   posts   Post[]
   profile Profile?
+  role    Role     @default(USER)
+}
+
+enum Role {
+  USER
+  ADMIN
 }

@@ -6,6 +6,7 @@ export const typeDefs = gql`
     email: String
     name: String
     profile: profile
+    role: role
   }
 
   type profile {
@@ -29,6 +30,18 @@ export const typeDefs = gql`
     createdAt: String
     updatedAt: String
     author: user
+    categories: [category]
+  }
+
+  type category {
+    id: Int!
+    name: String
+    post: [Post]
+  }
+
+  enum role {
+    user
+    admin
   }
 
   type Query {

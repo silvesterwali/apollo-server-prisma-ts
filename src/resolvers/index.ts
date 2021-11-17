@@ -1,5 +1,12 @@
 import { Context } from '../Context';
-import { Note, Post, Profile, User } from '../interfaceType';
+import {
+  Category,
+  InputUser,
+  Note,
+  Post,
+  Profile,
+  User,
+} from '../interfaceType';
 
 interface queryUser {
   id?: number;
@@ -30,6 +37,17 @@ export const resolvers = {
     notes: async (_parent: any, _args: any, ctx: Context): Promise<Note[]> => {
       return (await ctx.prisma.notes.findMany()) as Note[];
     },
+    categories: async (
+      _parent: any,
+      _args: any,
+      ctx: Context
+    ): Promise<Category[]> => {
+      return (await ctx.prisma.category.findMany({
+        orderBy: {
+          name: 'asc',
+        },
+      })) as Category[];
+    },
   },
   Mutation: {
     createNote: async (
@@ -42,6 +60,50 @@ export const resolvers = {
           content: args.content,
         },
       });
+    },
+    createUser: async (
+      _parent: any,
+      args: InputUser,
+      ctx: Context
+    ): Promise<User> => {
+      return (await ctx.prisma.user.create({
+        data: {
+          name: args.name,
+          email: args.email,
+        },
+      })) as User;
+    },
+    createPost: async (
+      _parent: any,
+      args: {
+        input: {
+          title: string;
+          content: string;
+          published: boolean;
+          authorId: number;
+        };
+      },
+      ctx: Context
+    ): Promise<Post> => {
+      return (await ctx.prisma.post.create({
+        data: {
+          title: args.input.title,
+          content: args.input.content,
+          published: args.input.published,
+          authorId: args.input.authorId,
+        },
+      })) as Post;
+    },
+    createPostCategory: async (
+      _parent: any,
+      args: { name: string },
+      ctx: Context
+    ): Promise<Category> => {
+      return (await ctx.prisma.category.create({
+        data: {
+          name: args.name,
+        },
+      })) as Category;
     },
   },
   post: {

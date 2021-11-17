@@ -36,6 +36,13 @@ export const typeDefs = gql`
     categories: [category]
   }
 
+  input inputPost {
+    title: String!
+    content: String!
+    published: Boolean!
+    authorId: Int!
+  }
+
   type category {
     id: Int!
     name: String
@@ -53,8 +60,12 @@ export const typeDefs = gql`
     user(id: Int!): user
     posts: [post]
     notes: [note]
+    categories: [category]
   }
   type Mutation {
     createNote(content: String!): note
+    createUser(name: String!, email: String!): user
+    createPostCategory(name: String!): category
+    createPost(input: inputPost!): post
   }
 `;

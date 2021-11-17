@@ -1,7 +1,13 @@
 export interface User {
   id: number;
   name: string;
-  email: String;
+  email: string;
+  role: string;
+}
+
+export interface InputUser {
+  name: string;
+  email: string;
 }
 
 export interface Profile {

@@ -61,18 +61,6 @@ export const resolvers = {
         },
       });
     },
-    createUser: async (
-      _parent: any,
-      args: InputUser,
-      ctx: Context
-    ): Promise<User> => {
-      return (await ctx.prisma.user.create({
-        data: {
-          name: args.name,
-          email: args.email,
-        },
-      })) as User;
-    },
     createPost: async (
       _parent: any,
       args: {
@@ -86,6 +74,55 @@ export const resolvers = {
       ctx: Context
     ): Promise<Post> => {
       return (await ctx.prisma.post.create({
+        data: {
+          title: args.input.title,
+          content: args.input.content,
+          published: args.input.published,
+          authorId: args.input.authorId,
+        },
+      })) as Post;
+    },
+    createUser: async (
+      _parent: any,
+      args: InputUser,
+      ctx: Context
+    ): Promise<User> => {
+      return (await ctx.prisma.user.create({
+        data: {
+          name: args.name,
+          email: args.email,
+        },
+      })) as User;
+    },
+    deletePost: async (
+      _parent: any,
+      args: { postId: number },
+      ctx: Context
+    ): Promise<Post> => {
+      return (await ctx.prisma.post.delete({
+        where: {
+          id: args.postId,
+        },
+      })) as Post;
+    },
+
+    updatePost: async (
+      _parent: any,
+      args: {
+        postId: number;
+        input: {
+          title: string;
+          content: string;
+          published: boolean;
+          authorId: number;
+        };
+      },
+      ctx: Context
+    ): Promise<Post> => {
+      return (await ctx.prisma.post.update({
+        where: {
+          id: args.postId,
+        },
         data: {
           title: args.input.title,
           content: args.input.content,

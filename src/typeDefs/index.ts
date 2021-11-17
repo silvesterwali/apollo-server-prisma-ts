@@ -1,6 +1,9 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
+  """
+   Type of user . please don't waste your time here
+  """
   type user {
     id: Int
     email: String
@@ -67,5 +70,7 @@ export const typeDefs = gql`
     createUser(name: String!, email: String!): user
     createPostCategory(name: String!): category
     createPost(input: inputPost!): post
+    updatePost(postId: Int!, input: inputPost!): post
+    deletePost(postId: Int!): post
   }
 `;

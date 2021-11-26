@@ -3,6 +3,7 @@ import {
   Category,
   InputUser,
   Note,
+  Office,
   Post,
   Profile,
   User,
@@ -60,6 +61,14 @@ export const resolvers = {
           content: args.content,
         },
       });
+    },
+    createOffice:async(_parent:unknown,args:{input:Office},ctx:Context): Promise<Office> => {
+      return await ctx.prisma.office.create({ 
+        data:{
+        userId: args.input.userId!,
+        code: args.input.code!,
+        description: args.input.description!
+      }}) as Office
     },
     createPost: async (
       _parent: any,
@@ -180,6 +189,13 @@ export const resolvers = {
     ): Promise<number | null> => {
       return await ctx.prisma.post.count({ where: { authorId: parent.id } });
     },
+    offices:async(parent:User,_args:unknown,ctx: Context): Promise<Office[]> =>{
+      return await ctx.prisma.office.findMany({
+        where:{
+          userId: parent.id
+        }
+      }) as Office[]
+    }
   },
   role: {
     USER: 'USER',

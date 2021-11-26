@@ -16,6 +16,13 @@ export interface Profile {
   userId: number;
 }
 
+export interface Office{
+  id:number;
+  userId:number;
+  code:string;
+  description:string;
+} 
+
 export interface Post {
   id: number;
   title: string;

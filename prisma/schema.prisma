@@ -49,6 +49,15 @@ model User {
   posts   Post[]
   profile Profile?
   role    Role     @default(USER)
+  offices Office[]
+}
+
+model Office{
+  id Int @id @default(autoincrement())
+  userId Int
+  code String
+  description String
+  user User @relation(fields:[userId],references: [id])
 }
 
 enum Role {

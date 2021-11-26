@@ -12,6 +12,15 @@ export const typeDefs = gql`
     role: role
     posts: [post]
     totalPost: Int
+    offices: [office]
+  }
+
+  type office {
+    id: Int!
+    userId: Int!
+    code: String
+    description: String
+    user:user
   }
 
   type profile {
@@ -46,6 +55,12 @@ export const typeDefs = gql`
     authorId: Int!
   }
 
+  input inputOffice {
+    userId: Int!
+    code: String!
+    description: String!
+  }
+
   type category {
     id: Int!
     name: String
@@ -65,8 +80,10 @@ export const typeDefs = gql`
     notes: [note]
     categories: [category]
   }
+  
   type Mutation {
     createNote(content: String!): note
+    createOffice(input:inputOffice!): office
     createUser(name: String!, email: String!): user
     createPostCategory(name: String!): category
     createPost(input: inputPost!): post

@@ -5,6 +5,8 @@ learn typescript and apollo server and prisma with mysql
 
 - [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate)
 
+- [Query Example](https://www.prisma.io/client)
+
 ## migrate prisma
 
 - to migrate the prisma schema

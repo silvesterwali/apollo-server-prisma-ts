@@ -103,6 +103,25 @@ export const resolvers = {
         },
       })) as User;
     },
+    createPostCategory: async (
+      _parent: any,
+      args: { name: string },
+      ctx: Context
+    ): Promise<Category> => {
+      return (await ctx.prisma.category.create({
+        data: {
+          name: args.name,
+        },
+      })) as Category;
+    },
+    createProfile: async (_parent:unknown,args:{ input:{userId:number,bio:string}},ctx:Context):Promise<Profile> => {
+      return (await ctx.prisma.profile.create({
+        data:{
+          bio:args.input.bio,
+          userId:args.input.userId
+        }
+      })) as Profile;
+    },
     deletePost: async (
       _parent: any,
       args: { postId: number },
@@ -140,17 +159,7 @@ export const resolvers = {
         },
       })) as Post;
     },
-    createPostCategory: async (
-      _parent: any,
-      args: { name: string },
-      ctx: Context
-    ): Promise<Category> => {
-      return (await ctx.prisma.category.create({
-        data: {
-          name: args.name,
-        },
-      })) as Category;
-    },
+   
   },
   post: {
     author: async (parent: Post, _args: any, ctx: Context): Promise<User> => {

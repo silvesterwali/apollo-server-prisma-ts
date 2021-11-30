@@ -54,6 +54,10 @@ export const typeDefs = gql`
     published: Boolean!
     authorId: Int!
   }
+  input inputProfile{
+    userId:Int!
+    bio:String!
+  }
 
   input inputOffice {
     userId: Int!
@@ -87,6 +91,7 @@ export const typeDefs = gql`
     createUser(name: String!, email: String!): user
     createPostCategory(name: String!): category
     createPost(input: inputPost!): post
+    createProfile(input:inputProfile!): profile
     updatePost(postId: Int!, input: inputPost!): post
     deletePost(postId: Int!): post
   }

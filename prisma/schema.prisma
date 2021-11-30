@@ -49,7 +49,7 @@ model User {
   posts   Post[]
   profile Profile?
   role    Role     @default(USER)
-  offices Office[]
+  office Office[]
 }
 
 model Office{
@@ -57,7 +57,7 @@ model Office{
   userId Int
   code String
   description String
-  user User @relation(fields:[userId],references: [id])
+  users User[] @relation(fields:[userId],references: [id])
 }
 
 enum Role {

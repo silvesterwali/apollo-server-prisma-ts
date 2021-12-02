@@ -39,6 +39,21 @@ export interface Note {
   updatedAt: Date;
 }
 
+export enum FamilyRelation{
+  SPOUSE="SPOUSE",
+  FIRST_CHILD="FIRST_CHILD",
+  SECOND_CHILD="SECOND_CHILD",
+  THIRD_CHILD="THIRD_CHILD"
+}
+export interface Family{
+  id:number;
+  relation:FamilyRelation;
+  fullName:string;
+  phone:string;
+  userId: number;
+}
+
+
 export interface Category {
   id: number;
   name: string;

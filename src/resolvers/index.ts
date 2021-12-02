@@ -1,6 +1,7 @@
 import { Context } from '../Context';
 import {
   Category,
+  Family,
   InputUser,
   Note,
   Office,
@@ -17,6 +18,15 @@ interface inputNote {
 }
 export const resolvers = {
   Query: {
+    
+    families:async(_parent:unknown,_args:unknown,ctx:Context):Promise<Family[]> =>{
+      return (await ctx.prisma.family.findMany()) as Family[]; 
+    },
+    family:async(_parent:unknown,args:{familyId:number},ctx:Context):Promise<Family> =>{
+      return (await ctx.prisma.family.findFirst({where:{
+        id:args.familyId
+      }}) ) as Family;
+    },
     hello: () => 'hello',
     users: async (_parent: any, _args: any, ctx: Context): Promise<User[]> => {
       return (await ctx.prisma.user.findMany()) as User[];
@@ -51,6 +61,16 @@ export const resolvers = {
     },
   },
   Mutation: {
+    createFamily:async(_parent:unknown,args:{input:Partial<Family>},ctx:Context):Promise<Family> =>{
+      return await ctx.prisma.family.create({
+        data: {
+          userId:args.input.userId!,
+          fullName: args.input.fullName!,
+          relation:args.input.relation!,
+          phone:args.input.phone!
+        }
+      }) as Family
+    },
     createNote: async (
       _parent: any,
       args: inputNote,
@@ -161,6 +181,11 @@ export const resolvers = {
     },
    
   },
+  family:{
+    user:async(parent:Family,_args:unknown,ctx: Context):Promise<User> =>{
+      return (await ctx.prisma.user.findFirst({where:{id:parent.userId}}))  as User;
+    }
+  },
   post: {
     author: async (parent: Post, _args: any, ctx: Context): Promise<User> => {
       return (await ctx.prisma.user.findFirst({
@@ -170,7 +195,18 @@ export const resolvers = {
       })) as User;
     },
   },
+  role: {
+    USER: 'USER',
+    ADMIN: 'ADMIN',
+  },
   user: {
+    families:async(parent:User,_args:unknown,ctx:Context):Promise<Family[]> =>{
+      return (await ctx.prisma.family.findMany({
+        where:{
+        userId:parent.id,
+      }
+    })) as Family[]
+    },
     profile: async (
       parent: User,
       _args: any,
@@ -206,8 +242,5 @@ export const resolvers = {
       }) as Office[]
     }
   },
-  role: {
-    USER: 'USER',
-    ADMIN: 'ADMIN',
-  },
+ 
 };

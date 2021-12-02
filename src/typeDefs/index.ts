@@ -13,6 +13,7 @@ export const typeDefs = gql`
     posts: [post]
     totalPost: Int
     offices: [office]
+    families:[family]
   }
 
   type office {
@@ -48,6 +49,23 @@ export const typeDefs = gql`
     categories: [category]
   }
 
+  type family{
+    id:Int!
+    relation: familyRelation!
+    fullName: String!
+    phone: String
+    userId: Int!
+    user:user!
+
+  }
+
+  enum familyRelation{
+    SPOUSER
+    FIRST_CHILD
+    SECOND_CHILD
+    THIRD_CHILD
+  }
+
   input inputPost {
     title: String!
     content: String!
@@ -65,6 +83,13 @@ export const typeDefs = gql`
     description: String!
   }
 
+  input inputFamily {
+    fullName: String!
+    phone: String!
+    userId: Int!
+    relation: familyRelation
+  }
+
   type category {
     id: Int!
     name: String
@@ -77,15 +102,19 @@ export const typeDefs = gql`
   }
 
   type Query {
-    hello: String
-    users: [user]
-    user(id: Int!): user
-    posts: [post]
-    notes: [note]
     categories: [category]
+    families:[family]
+    family(familyId: Int!):family
+    hello: String
+    notes: [note]
+    posts: [post]
+    user(id: Int!): user
+    users: [user]
+
   }
   
   type Mutation {
+    createFamily(input:inputFamily!):family
     createNote(content: String!): note
     createOffice(input:inputOffice!): office
     createUser(name: String!, email: String!): user

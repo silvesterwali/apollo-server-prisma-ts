@@ -50,6 +50,7 @@ model User {
   profile Profile?
   role    Role     @default(USER)
   office Office[]
+  families Family[]
 }
 
 model Office{
@@ -58,6 +59,22 @@ model Office{
   code String
   description String
   users User[] @relation(fields:[userId],references: [id])
+}
+
+model Family{
+  id Int @id @default(autoincrement())
+  relation FamilyRelation
+  fullName String
+  phone String
+  userId Int
+  user User @relation(fields:[userId],references: [id])
+}
+
+enum FamilyRelation {
+  SPOUSE
+  FIRST_CHILD
+  SECOND_CHILD
+  THIRD_CHILD
 }
 
 enum Role {

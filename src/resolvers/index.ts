@@ -1,4 +1,4 @@
-import { Context } from '../Context';
+import { Context } from "../Context";
 import {
   Category,
   Family,
@@ -8,7 +8,7 @@ import {
   Post,
   Profile,
   User,
-} from '../interfaceType';
+} from "../interfaceType";
 
 interface queryUser {
   id?: number;
@@ -18,16 +18,42 @@ interface inputNote {
 }
 export const resolvers = {
   Query: {
-    
-    families:async(_parent:unknown,_args:unknown,ctx:Context):Promise<Family[]> =>{
-      return (await ctx.prisma.family.findMany()) as Family[]; 
+    categories: async (
+      _parent: any,
+      _args: any,
+      ctx: Context
+    ): Promise<Category[]> => {
+      return (await ctx.prisma.category.findMany({
+        orderBy: {
+          name: "asc",
+        },
+      })) as Category[];
     },
-    family:async(_parent:unknown,args:{familyId:number},ctx:Context):Promise<Family> =>{
-      return (await ctx.prisma.family.findFirst({where:{
-        id:args.familyId
-      }}) ) as Family;
+    families: async (
+      _parent: unknown,
+      _args: unknown,
+      ctx: Context
+    ): Promise<Family[]> => {
+      return (await ctx.prisma.family.findMany()) as Family[];
     },
-    hello: () => 'hello',
+    family: async (
+      _parent: unknown,
+      args: { familyId: number },
+      ctx: Context
+    ): Promise<Family> => {
+      return (await ctx.prisma.family.findFirst({
+        where: {
+          id: args.familyId,
+        },
+      })) as Family;
+    },
+    hello: () => "hello",
+    notes: async (_parent: any, _args: any, ctx: Context): Promise<Note[]> => {
+      return (await ctx.prisma.notes.findMany()) as Note[];
+    },
+    posts: async (_parent: any, _args: any, ctx: Context): Promise<Post[]> => {
+      return (await ctx.prisma.post.findMany()) as Post[];
+    },
     users: async (_parent: any, _args: any, ctx: Context): Promise<User[]> => {
       return (await ctx.prisma.user.findMany()) as User[];
     },
@@ -42,34 +68,21 @@ export const resolvers = {
         },
       })) as User;
     },
-    posts: async (_parent: any, _args: any, ctx: Context): Promise<Post[]> => {
-      return (await ctx.prisma.post.findMany()) as Post[];
-    },
-    notes: async (_parent: any, _args: any, ctx: Context): Promise<Note[]> => {
-      return (await ctx.prisma.notes.findMany()) as Note[];
-    },
-    categories: async (
-      _parent: any,
-      _args: any,
-      ctx: Context
-    ): Promise<Category[]> => {
-      return (await ctx.prisma.category.findMany({
-        orderBy: {
-          name: 'asc',
-        },
-      })) as Category[];
-    },
   },
   Mutation: {
-    createFamily:async(_parent:unknown,args:{input:Partial<Family>},ctx:Context):Promise<Family> =>{
-      return await ctx.prisma.family.create({
+    createFamily: async (
+      _parent: unknown,
+      args: { input: Partial<Family> },
+      ctx: Context
+    ): Promise<Family> => {
+      return (await ctx.prisma.family.create({
         data: {
-          userId:args.input.userId!,
+          userId: args.input.userId!,
           fullName: args.input.fullName!,
-          relation:args.input.relation!,
-          phone:args.input.phone!
-        }
-      }) as Family
+          relation: args.input.relation!,
+          phone: args.input.phone!,
+        },
+      })) as Family;
     },
     createNote: async (
       _parent: any,
@@ -82,13 +95,18 @@ export const resolvers = {
         },
       });
     },
-    createOffice:async(_parent:unknown,args:{input:Office},ctx:Context): Promise<Office> => {
-      return await ctx.prisma.office.create({ 
-        data:{
-        userId: args.input.userId!,
-        code: args.input.code!,
-        description: args.input.description!
-      }}) as Office
+    createOffice: async (
+      _parent: unknown,
+      args: { input: Office },
+      ctx: Context
+    ): Promise<Office> => {
+      return (await ctx.prisma.office.create({
+        data: {
+          userId: args.input.userId!,
+          code: args.input.code!,
+          description: args.input.description!,
+        },
+      })) as Office;
     },
     createPost: async (
       _parent: any,
@@ -134,12 +152,16 @@ export const resolvers = {
         },
       })) as Category;
     },
-    createProfile: async (_parent:unknown,args:{ input:{userId:number,bio:string}},ctx:Context):Promise<Profile> => {
+    createProfile: async (
+      _parent: unknown,
+      args: { input: { userId: number; bio: string } },
+      ctx: Context
+    ): Promise<Profile> => {
       return (await ctx.prisma.profile.create({
-        data:{
-          bio:args.input.bio,
-          userId:args.input.userId
-        }
+        data: {
+          bio: args.input.bio,
+          userId: args.input.userId,
+        },
       })) as Profile;
     },
     deletePost: async (
@@ -153,7 +175,6 @@ export const resolvers = {
         },
       })) as Post;
     },
-
     updatePost: async (
       _parent: any,
       args: {
@@ -179,12 +200,17 @@ export const resolvers = {
         },
       })) as Post;
     },
-   
   },
-  family:{
-    user:async(parent:Family,_args:unknown,ctx: Context):Promise<User> =>{
-      return (await ctx.prisma.user.findFirst({where:{id:parent.userId}}))  as User;
-    }
+  family: {
+    user: async (
+      parent: Family,
+      _args: unknown,
+      ctx: Context
+    ): Promise<User> => {
+      return (await ctx.prisma.user.findFirst({
+        where: { id: parent.userId },
+      })) as User;
+    },
   },
   post: {
     author: async (parent: Post, _args: any, ctx: Context): Promise<User> => {
@@ -196,16 +222,31 @@ export const resolvers = {
     },
   },
   role: {
-    USER: 'USER',
-    ADMIN: 'ADMIN',
+    USER: "USER",
+    ADMIN: "ADMIN",
   },
   user: {
-    families:async(parent:User,_args:unknown,ctx:Context):Promise<Family[]> =>{
+    families: async (
+      parent: User,
+      _args: unknown,
+      ctx: Context
+    ): Promise<Family[]> => {
       return (await ctx.prisma.family.findMany({
-        where:{
-        userId:parent.id,
-      }
-    })) as Family[]
+        where: {
+          userId: parent.id,
+        },
+      })) as Family[];
+    },
+    offices: async (
+      parent: User,
+      _args: unknown,
+      ctx: Context
+    ): Promise<Office[]> => {
+      return (await ctx.prisma.office.findMany({
+        where: {
+          userId: parent.id,
+        },
+      })) as Office[];
     },
     profile: async (
       parent: User,
@@ -234,13 +275,5 @@ export const resolvers = {
     ): Promise<number | null> => {
       return await ctx.prisma.post.count({ where: { authorId: parent.id } });
     },
-    offices:async(parent:User,_args:unknown,ctx: Context): Promise<Office[]> =>{
-      return await ctx.prisma.office.findMany({
-        where:{
-          userId: parent.id
-        }
-      }) as Office[]
-    }
   },
- 
 };

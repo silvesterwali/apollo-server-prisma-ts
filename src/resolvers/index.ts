@@ -164,6 +164,9 @@ export const resolvers = {
         },
       })) as Profile;
     },
+    deleteFamily:async(_parent:unknown,args:{familyId:number},ctx:Context): Promise<Family> =>{
+      return (await ctx.prisma.family.delete({where:{id:args.familyId}})) as Family
+    },
     deletePost: async (
       _parent: any,
       args: { postId: number },

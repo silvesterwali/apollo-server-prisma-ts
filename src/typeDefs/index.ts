@@ -121,7 +121,8 @@ export const typeDefs = gql`
     createPostCategory(name: String!): category
     createPost(input: inputPost!): post
     createProfile(input:inputProfile!): profile
-    updatePost(postId: Int!, input: inputPost!): post
+    deleteFamily(familyId:Int!):family
     deletePost(postId: Int!): post
+    updatePost(postId: Int!, input: inputPost!): post
   }
 `;

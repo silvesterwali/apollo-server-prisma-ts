@@ -60,7 +60,7 @@ export const typeDefs = gql`
   }
 
   enum familyRelation{
-    SPOUSER
+    SPOUSE
     FIRST_CHILD
     SECOND_CHILD
     THIRD_CHILD
